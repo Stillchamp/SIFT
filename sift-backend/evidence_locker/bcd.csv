@@ -1,0 +1,8 @@
+timestamp,source,event_id,entity,details
+1788097880,windows_evtx,4624,203.0.113.50,Network logon
+1788098000,network_log,conn,203.0.113.50,C2_BEACON
+1788098533,prefetch,exec,evil.exe,Executed from temp
+1788099005,mft,create,evil.exe,File creation on disk
+1788099100,registry,add,evil.exe,Persistence established
+1788099200,network_log,conn,198.51.100.24,unknown.exe communicating
+1788099800,memory_malfind,inject,svchost.exe,Suspicious memory mapping_out

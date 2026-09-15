@@ -1,0 +1,6 @@
+[
+  { "event_id": 1001, "timestamp": 1700000000, "action": "User Login", "source": "192.168.1.5", "target": "DB_Server" },
+  { "event_id": 1002, "timestamp": 1700000050, "action": "File Accessed", "source": "DB_Server", "target": "Financial_Records" },
+  { "event_id": 1003, "timestamp": 1699999900, "action": "Malware Executed", "source": "192.168.1.5", "target": "Financial_Records" }, 
+  { "event_id": 1005, "timestamp": 1700000100, "action": "System Reboot", "source": "Admin_PC", "target": "DB_Server" }
+]
