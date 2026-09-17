@@ -77,7 +77,7 @@ const closeModal = () => {
 // API Calls
 const fetchEvidence = async () => {
   try {
-    const response = await fetch('http://localhost:8000/api/v1/evidence')
+    const response = await fetch('https://sift-backend-0cdz.onrender.com/api/v1/evidence')
     const data = await response.json()
     evidenceList.value = data.evidence
   } catch (error) {
@@ -102,8 +102,8 @@ const toggleRow = async (hash) => {
   
   try {
     const [findingsRes, custodyRes] = await Promise.all([
-      fetch(`http://localhost:8000/api/v1/evidence/${hash}/findings`),
-      fetch(`http://localhost:8000/api/v1/evidence/${hash}/custody`)
+      fetch(`https://sift-backend-0cdz.onrender.com/api/v1/evidence/${hash}/findings`),
+      fetch(`https://sift-backend-0cdz.onrender.com/api/v1/evidence/${hash}/custody`)
     ])
     const findingsData = await findingsRes.json()
     const custodyData = await custodyRes.json()
@@ -134,7 +134,7 @@ const submitIngest = async () => {
   formData.append("location", modalForm.location)
 
   try {
-    const response = await fetch('http://localhost:8000/api/v1/ingest', { method: 'POST', body: formData })
+    const response = await fetch('https://sift-backend-0cdz.onrender.com/api/v1/ingest', { method: 'POST', body: formData })
     if (!response.ok) {
       const err = await response.json()
       throw new Error(err.detail || "Upload failed")
@@ -149,7 +149,7 @@ const submitIngest = async () => {
 
 const submitCheckout = async () => {
   try {
-    const response = await fetch(`http://localhost:8000/api/v1/evidence/${selectedHash.value}/checkout`, {
+    const response = await fetch(`https://sift-backend-0cdz.onrender.com/api/v1/evidence/${selectedHash.value}/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -192,7 +192,7 @@ const submitCheckin = async () => {
   formData.append("encryption_key", modalForm.encryptionKey)
 
   try {
-    const response = await fetch(`http://localhost:8000/api/v1/evidence/${selectedHash.value}/checkin`, {
+    const response = await fetch(`https://sift-backend-0cdz.onrender.com/api/v1/evidence/${selectedHash.value}/checkin`, {
       method: 'POST',
       body: formData,
     })
@@ -214,7 +214,7 @@ const submitCheckin = async () => {
 
 const submitPurge = async () => {
   try {
-    const response = await fetch(`http://localhost:8000/api/v1/evidence/${selectedHash.value}/purge`, {
+    const response = await fetch(`https://sift-backend-0cdz.onrender.com/api/v1/evidence/${selectedHash.value}/purge`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -238,7 +238,7 @@ const submitPurge = async () => {
 const submitVerify = async () => {
   isVerifying.value = true
   try {
-    const response = await fetch(`http://localhost:8000/api/v1/evidence/${selectedHash.value}/verify`, {
+    const response = await fetch(`https://sift-backend-0cdz.onrender.com/api/v1/evidence/${selectedHash.value}/verify`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ officer_id: modalForm.officerId, location: modalForm.location })
@@ -320,7 +320,7 @@ onMounted(() => fetchEvidence())
                         <button @click="openModal('verify', item.sha256_hash)" class="px-3 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-400 border border-indigo-500/30 text-xs font-bold rounded shadow-sm transition">
                           {{ isVerifying ? 'Hashing...' : 'Re-Verify Seal' }}
                         </button>
-                        <a :href="`http://localhost:8000/api/v1/evidence/${item.sha256_hash}/report`" download class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded shadow-sm transition">
+                        <a :href="`https://sift-backend-0cdz.onrender.com/api/v1/evidence/${item.sha256_hash}/report`" download class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded shadow-sm transition">
                           Export Court PDF
                         </a>
                         <button @click="openModal('checkout', item.sha256_hash)" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold rounded shadow-sm transition">
