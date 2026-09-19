@@ -1,40 +1,39 @@
-SIFT  Secure Immutable Forensic Tracking
-Track H: Proving Digital Evidence Has Not Been Changed
+# SIFT: Secure Immutable Forensic Tracking
 
-An enterprise-grade digital forensics vault and chain-of-custody ledger.
+**Submission for ICSC Universities Hackathon 2026**  
+**Track H:** Media, Information Integrity & Civic Trust: Proving Digital Evidence Has Not Been Changed  
 
-📌 The Problem & Our Solution
-Digital evidence is only useful if you can prove it is genuine. Today, massive files like 100GB phone extractions are copied onto flash drives, emailed between precincts, and change hands for years. Cases are routinely lost because nobody can mathematically prove the files weren't altered.
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![Vue.js](https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vue.js&logoColor=4FC08D)
+![Neo4j](https://img.shields.io/badge/Neo4j-008CC1?style=for-the-badge&logo=neo4j&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
-SIFT replaces this chaos. We built an immutable, cryptographically sealed chain-of-custody platform that decouples massive physical files from their digital fingerprints.
+##  Problem Statement & Approach
+In modern digital investigations, traditional forensic storage relies on vulnerable physical drives and manual chain-of-custody tracking. SIFT replaces this "Flash Drive Chaos" with a cryptographic, automated ecosystem. 
 
-✨ Core Features
-📶 Offline Intake (For 100GB+ Files): Officers generate a SHA-256 fingerprint locally at the crime scene in seconds. The massive file stays secure locally, while the tiny hash is synced to the cloud when the network is restored.
+By coupling a **Neo4j graph ledger** with SHA-256 baselines, AES-256 encrypted checkouts, and algorithmic topology analysis, SIFT guarantees absolute mathematical integrity from intake to court submission or lawful warrant expiration.
 
-🔒 Neo4j Immutable Vault: Baseline hashes and custody handoffs are permanently locked into a Neo4j graph database.
+##  Core Features
+1. **Cryptographic Sealing & Offline Sync:** Calculates a SHA-256 baseline upon intake. Includes an offline-sync field hash verification to trap evidence tampered with in transit from the physical crime scene.
+2. **AES-256 Confidentiality ($d_{DE}$):** In accordance with ISO/IEC 27037, original master files are never analyzed directly. SIFT generates encrypted working copies for examiners.
+3. **The Handoff Handshake:** Returning working copies are decrypted and hashed against the Neo4j baseline. Any bit-level discrepancy instantly triggers a Spoliation Alert attributed to the submitting officer.
+4. **Algorithmic Forensic Engines:**
+   * **Temporal Sequence Engine:** Mathematically proves log chronometry, instantly detecting clock manipulation (Timestomping) in CSV, JSON, and native `.evtx` files.
+   * **NetworkX PageRank:** Maps directed attack interactions to identify the network's "Center of Gravity."
+5. **Lawful Purge (NDPR / GDPR):** Securely scrubs physical binaries upon warrant expiration while preserving an immutable `Tombstone Record` in the graph ledger.
+6. **Court-Admissible Export:** Generates an ISO 27037-compliant PDF dossier of the digital chain of custody (DCoC) on the fly.
 
-🚨 The Spoliation Trap: When examiners check out evidence, SIFT gives them an AES-256 encrypted working copy. If they decrypt it, alter even a single word, and try to check it back in, SIFT catches the hash mismatch and instantly flags a tamper alert.
+##  Synthetic Dataset Methodology
+Per hackathon constraints prohibiting real personal data, this system was built and tested entirely on synthetic datasets:
+* `test_logs.json`: Synthetic enterprise domain controller logs demonstrating timestomping.
+* `test_logs.csv`: Synthetic multi-hop privilege escalation data.
+* `Security.evtx`: A native Windows Event Log generated from a sandboxed evaluation VM to test pure-Python binary XML parsing.
 
-🧠 Algorithmic Audits: Automatically maps network attack topologies (PageRank) and catches manipulated timestamps (Temporal Check).
+##  Honest Limitations & Failure Modes
+In adherence to the evaluation rubric, we acknowledge the following systemic limitations under real-world conditions:
+1. **Garbage-In, Garbage-Out (Intake Trust):** SIFT guarantees evidence is not altered *after* reaching the platform. However, if a corrupt investigator modifies a file *before* the initial offline field hash is generated, SIFT will cryptographically seal the tampered file as the baseline.
+2. **In-Memory Scale Limits:** The current pure-Python `.evtx` parser loads XML structures into memory. Processing single binary event logs larger than 2GB causes memory spikes on standard hardware. Production deployment would require streaming `iterparse` logic.
+3. **Single-Node Graph Availability:** SIFT currently relies on a single Neo4j database instance. Full Byzantine Fault Tolerance (BFT) against database-level attacks would require a distributed consensus protocol (e.g., Hyperledger Fabric).
 
-📄 Judge-Friendly Court PDFs: With one click, SIFT translates complex system logs and JSON into a plain-English, ISO 27037-compliant court dossier.
-
-⚠️ Honest Limitations
-To be completely transparent about where our prototype boundaries lie:
-
-Browser Limits: The current web frontend will crash if you drag-and-drop a 100GB file. Enterprise deployment requires a chunked, multi-part upload pipeline.
-
-Pre-Ingestion Tampering: SIFT is a vault, not a time machine. We guarantee perfect custody after the first hash is generated, but if an officer alters a file before that initial hash, SIFT will seal the altered file as the truth.
-
-🛠️ Tech Stack
-Frontend: Vue 3, Vite, Tailwind CSS (Hosted on Vercel)
-
-Backend: FastAPI, Python, AES-256 Cryptography (Hosted on Render)
-
-Database: Neo4j Graph Database
-
-Analysis & Reports: NetworkX (PageRank), ReportLab (PDF Generation)
-
-🚀 Quick Start
-vist: https://sift-dashboard-kohl.vercel.app/
-
+##  Running the Prototype visit
+https://sift-dashboard-kohl.vercel.app
